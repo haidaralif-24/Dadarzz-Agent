@@ -1,7 +1,6 @@
 # 🧠 Dadarzz Agent
 
-Your AI-Agent. Dadarzz Agent is a local-first interface that connects a powerful LLM to your digital life: your files, Google Drive, Gmail, and Google Calendar.
-
+Your AI-Agent. Dadarzz Agent is a local-first interface that connects a powerful LLM to your digital life.
 ---
 
 ## 🌟 Features
@@ -16,7 +15,7 @@ Your AI-Agent. Dadarzz Agent is a local-first interface that connects a powerful
 
 ## 🚀 Quick Start (Pre-Built Binaries)
 
-The easiest way to use Dadarzz Agent is to download the pre-built binaries from the [GitHub Releases](https://github.com/Dadarzz2405/Dadarzz-Agent/releases/latest) page. **No Python required!**
+The easiest way to use Dadarzz Agent is to download the pre-built binaries from the [GitHub Releases](https://github.com/Dadarzz2405/Dadarzz-Agent/releases/latest) page.
 
 | Platform | Architecture | What to Download |
 |----------|-------------|------------------|
