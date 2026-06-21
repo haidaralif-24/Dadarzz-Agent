@@ -62,21 +62,6 @@
                     </form>
                 </div>
 
-                <!-- Google Auth -->
-                <div class="settings-card">
-                    <h3><span class="icon icon-link"></span> Google Account</h3>
-                    <p class="settings-desc">
-                        {% if user.google_token %}
-                            Google account is connected.
-                        {% else %}
-                            Not connected. Connect to use Gmail, Calendar, Drive, and Docs.
-                        {% endif %}
-                    </p>
-                    <button class="btn btn-google btn-sm" onclick="window.open('/oauth2callback', '_blank')">
-                        {% if user.google_token %}Re-authenticate{% else %}Connect Google{% endif %}
-                    </button>
-                </div>
-
                 <!-- Clear History -->
                 <div class="settings-card">
                     <h3><span class="icon icon-trash"></span> Conversation History</h3>

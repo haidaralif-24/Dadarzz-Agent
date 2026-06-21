@@ -1,6 +1,6 @@
 /**
  * Dadarzz Agent — Frontend JavaScript
- * Handles: chat, shortcuts, file upload, email modal, notifications, dark/light mode
+ * Handles: chat, shortcuts, file upload, notifications, dark/light mode
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -23,15 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("theme-toggle");
     const themeToggleSm = document.getElementById("theme-toggle-sm");
     const themeIcon = document.getElementById("theme-icon");
-
-    // Email modal
-    const emailModal = document.getElementById("email-modal");
-    const emailModalClose = document.getElementById("email-modal-close");
-    const emailCancel = document.getElementById("email-cancel");
-    const emailSend = document.getElementById("email-send");
-
-    let pendingDraftId = null;
-
 
     // ══════════════════════════════════════════════════════
     // THEME — Dark / Light Mode
@@ -121,24 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 removeTyping(typingEl);
 
                 const reply = data.response || "No response received.";
-
-                // Check if reply contains email draft info
-                if (reply.includes("draft_id") || reply.includes("Email draft")) {
-                    try {
-                        // Try to extract draft info from structured response
-                        const draftMatch = reply.match(/draft[_\s](?:id|#)?[:\s]*(\d+)/i);
-                        if (draftMatch) {
-                            // Show email data if available
-                            addMessage(reply, "assistant");
-                        } else {
-                            addMessage(reply, "assistant");
-                        }
-                    } catch {
-                        addMessage(reply, "assistant");
-                    }
-                } else {
-                    addMessage(reply, "assistant");
-                }
+                addMessage(reply, "assistant");
 
                 // Clear file
                 clearFile();
@@ -191,54 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (filePreview) filePreview.style.display = "none";
         if (fileName) fileName.textContent = "";
     }
-
-
-    // ══════════════════════════════════════════════════════
-    // EMAIL MODAL
-    // ══════════════════════════════════════════════════════
-
-    function showEmailModal(to, subject, body, draftId) {
-        if (!emailModal) return;
-        document.getElementById("email-to").textContent = to;
-        document.getElementById("email-subject").textContent = subject;
-        document.getElementById("email-body").textContent = body;
-        pendingDraftId = draftId;
-        emailModal.style.display = "flex";
-    }
-
-    function closeEmailModal() {
-        if (emailModal) emailModal.style.display = "none";
-        pendingDraftId = null;
-    }
-
-    if (emailModalClose) emailModalClose.addEventListener("click", closeEmailModal);
-    if (emailCancel) emailCancel.addEventListener("click", closeEmailModal);
-
-    if (emailSend) {
-        emailSend.addEventListener("click", async () => {
-            if (!pendingDraftId) return;
-            closeEmailModal();
-            addMessage("Sending email...", "assistant");
-
-            try {
-                const resp = await fetch("/chat", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        confirm: "send_email",
-                        draft_id: pendingDraftId
-                    }),
-                });
-                const data = await resp.json();
-                addMessage(data.response || "Email sent!", "assistant");
-            } catch {
-                addMessage("Failed to send email.", "assistant");
-            }
-        });
-    }
-
-    // Expose for agent responses that include draft data
-    window.showEmailModal = showEmailModal;
 
 
     // ══════════════════════════════════════════════════════

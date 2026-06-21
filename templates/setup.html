@@ -55,31 +55,18 @@
                 <div id="key-result" class="key-result"></div>
             </div>
 
-            <!-- Step 3: Google Auth -->
+            <!-- Step 3: All Set -->
             <div class="step" id="step3">
-                <div class="step-header">
-                    <span class="step-badge">3</span>
-                    <h2>Connect Google Services</h2>
-                </div>
-                <p class="step-desc">
-                    Optional: Connect Gmail, Calendar, Docs, and Drive for full functionality.
-                    You can skip this and connect later in Settings.
-                </p>
-                <div class="step-actions">
-                    <button type="button" class="btn btn-outline" onclick="goStep(2)">← Back</button>
-                    <button type="button" class="btn btn-google" onclick="window.open('/oauth2callback', '_blank')">
-                        <span class="icon icon-link"></span> Connect Google Account
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="goStep(4)">Continue →</button>
-                </div>
-            </div>
-
-            <!-- Step 4: All Set -->
-            <div class="step" id="step4">
                 <div class="step-header">
                     <span class="step-badge">✓</span>
                     <h2>You're all set!</h2>
                 </div>
+                <p class="step-desc">Click below to start using Dadarzz Agent. You can change settings anytime.</p>
+                <div class="step-actions">
+                    <button type="button" class="btn btn-outline" onclick="goStep(2)">← Back</button>
+                    <button type="submit" class="btn btn-primary btn-lg"><span class="icon icon-rocket"></span> Launch Dadarzz Agent</button>
+                </div>
+            </div>
                 <p class="step-desc">Click below to start using Dadarzz Agent. You can change settings anytime.</p>
                 <div class="step-actions">
                     <button type="button" class="btn btn-outline" onclick="goStep(3)">← Back</button>
@@ -93,7 +80,6 @@
             <span class="dot active" data-step="1"></span>
             <span class="dot" data-step="2"></span>
             <span class="dot" data-step="3"></span>
-            <span class="dot" data-step="4"></span>
         </div>
     </div>
 

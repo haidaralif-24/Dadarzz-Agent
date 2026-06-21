@@ -50,9 +50,6 @@
                 <!-- Filters -->
                 <div class="filter-bar">
                     <a href="/log" class="filter-chip {% if not current_filter %}active{% endif %}">All</a>
-                    <a href="/log?filter=sent_email" class="filter-chip {% if current_filter == 'sent_email' %}active{% endif %}"><span class="icon icon-email"></span> Email</a>
-                    <a href="/log?filter=created_event" class="filter-chip {% if current_filter == 'created_event' %}active{% endif %}"><span class="icon icon-calendar"></span> Calendar</a>
-                    <a href="/log?filter=uploaded_file" class="filter-chip {% if current_filter == 'uploaded_file' %}active{% endif %}"><span class="icon icon-drive"></span> Drive</a>
                     <a href="/log?filter=created_file" class="filter-chip {% if current_filter == 'created_file' %}active{% endif %}"><span class="icon icon-folder"></span> Files</a>
                     <a href="/log?filter=settings_update" class="filter-chip {% if current_filter == 'settings_update' %}active{% endif %}"><span class="icon icon-settings"></span> Settings</a>
                 </div>

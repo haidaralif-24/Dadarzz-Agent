@@ -47,12 +47,7 @@
 
             <!-- Shortcut Chips -->
             <div class="shortcut-bar" id="shortcut-bar">
-                <button class="chip" data-shortcut="/email"><span class="icon icon-email"></span> Email</button>
-                <button class="chip" data-shortcut="/cal"><span class="icon icon-calendar"></span> Calendar</button>
-                <button class="chip" data-shortcut="/drive"><span class="icon icon-drive"></span> Drive</button>
-                <button class="chip" data-shortcut="/docs"><span class="icon icon-doc"></span> Docs</button>
                 <button class="chip" data-shortcut="/files"><span class="icon icon-folder"></span> Files</button>
-                <button class="chip" data-shortcut="/remind"><span class="icon icon-clock"></span> Remind</button>
                 <button class="chip" data-shortcut="/ask"><span class="icon icon-help"></span> Ask</button>
             </div>
 
@@ -61,7 +56,7 @@
                 <div class="message assistant">
                     <div class="message-avatar"><img src="/static/logo.svg" alt="DA" class="avatar-logo"></div>
                     <div class="message-content">
-                        <p>Hey {{ user.display_name }}! I'm your Dadarzz Agent. I can help with email, calendar, Drive, Docs, local files, and answer questions about your documents. Try a shortcut above or just ask me anything!</p>
+                        <p>Hey {{ user.display_name }}! I'm your Dadarzz Agent. I can help manage your local files and answer questions about your documents. Try a shortcut above or just ask me anything!</p>
                     </div>
                 </div>
             </div>
@@ -70,7 +65,7 @@
             <div class="chat-input-area">
                 <form id="chat-form" enctype="multipart/form-data">
                     <div class="input-row">
-                        <label class="file-upload-btn" title="Attach a file for /ask or /drive">
+                        <label class="file-upload-btn" title="Attach a file for /ask">
                             <input type="file" id="file-input" name="file" hidden>
                             <span class="icon icon-paperclip"></span>
                         </label>
@@ -87,25 +82,6 @@
                 </form>
             </div>
         </main>
-    </div>
-
-    <!-- Email Preview Modal -->
-    <div class="modal-overlay" id="email-modal" style="display:none;">
-        <div class="modal">
-            <div class="modal-header">
-                <h3><span class="icon icon-email"></span> Email Preview</h3>
-                <button class="modal-close" id="email-modal-close">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="email-field"><strong>To:</strong> <span id="email-to"></span></div>
-                <div class="email-field"><strong>Subject:</strong> <span id="email-subject"></span></div>
-                <div class="email-body" id="email-body"></div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="email-cancel">Cancel</button>
-                <button class="btn btn-primary" id="email-send">Send Email</button>
-            </div>
-        </div>
     </div>
 
     <!-- Toast Container -->

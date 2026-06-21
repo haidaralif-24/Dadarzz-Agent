@@ -1,15 +1,12 @@
 # 🧠 Dadarzz Agent
 
-Your AI-Agent. Dadarzz Agent is a local-first interface that connects a powerful LLM to your digital life.
+Your AI-Agent. Dadarzz Agent is a local-first interface that connects a powerful LLM to your local files.
 ---
 
 ## 🌟 Features
 
 - **Document Understanding (PDFs/TXT)**: Upload files and ask questions directly.
-- **Google Drive Integration**: List, read, search, upload, and download files from your Drive.
-- **Gmail & Calendar**: Draft emails, send them via your account, view your inbox, schedule events, and check upcoming deadlines.
 - **Local File Management**: Let the agent organize, create, and manage your local files safely.
-- **Background Reminders**: Automatically reminds you of upcoming deadlines via an unobtrusive notification system.
 
 ---
 

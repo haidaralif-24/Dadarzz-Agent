@@ -1,5 +1,4 @@
 import os
-import json
 import base64
 import secrets
 from pathlib import Path
@@ -14,7 +13,6 @@ from memory.db import (
     init_db, get_user, create_user, update_user, delete_user,
     get_history, clear_history, get_activity_log, append_activity,
     get_pending_notifications, mark_notified,
-    get_draft, update_draft_status
 )
 import agent as ai_agent
 
@@ -101,24 +99,6 @@ def setup():
     return render_template("setup.html")
 
 
-@app.route("/oauth2callback")
-def oauth2callback():
-    """Google OAuth callback — placeholder for real OAuth flow."""
-    # In production: exchange code for token, store in DB
-    # For now: store a dummy token so the user can proceed
-    user = current_user()
-    if user:
-        update_user(user["id"], google_token="placeholder_token")
-        append_activity(user["id"], "google_auth", "Google account connected")
-    return """
-    <html><body style="font-family:sans-serif;text-align:center;padding:60px">
-    <h2>✅ Google Connected</h2>
-    <p>You can close this tab and return to setup.</p>
-    <script>setTimeout(()=>window.close(),2000)</script>
-    </body></html>
-    """
-
-
 @app.route("/api/test-key", methods=["POST"])
 def test_key():
     """AJAX endpoint to test an API key without submitting the form."""
@@ -140,24 +120,8 @@ def chat():
         if request.is_json:
             data = request.get_json()
             message = data.get("message", "").strip()
-            confirm = data.get("confirm")
-            draft_id = data.get("draft_id")
         else:
             message = request.form.get("message", "").strip()
-            confirm = request.form.get("confirm")
-            draft_id = request.form.get("draft_id")
-
-        # Handle email send confirmation
-        if confirm == "send_email" and draft_id:
-            draft = get_draft(int(draft_id))
-            if draft:
-                # Attempt to send via gmail tool
-                from tools.gmail_tool import send as gmail_send
-                result = gmail_send(user["id"], draft)
-                update_draft_status(int(draft_id), "sent")
-                append_activity(user["id"], "sent_email", f"To: {draft['to_addr']}")
-                return jsonify({"response": result})
-            return jsonify({"response": "Draft not found."})
 
         if not message:
             return jsonify({"response": "Please type a message."})
@@ -178,7 +142,6 @@ def chat():
             message=message,
             api_key=api_key,
             file_path=uploaded_path,
-            google_token=user.get("google_token")
         )
 
         return jsonify({"response": reply})
@@ -273,7 +236,4 @@ if __name__ == "__main__":
     # Auto-open browser (cross-platform: works on macOS, Windows, Linux)
     threading.Thread(target=_open_browser, daemon=True).start()
 
-    # Start notification background thread
-    from notifications.notifier import start_notifier
-    start_notifier(app)
     app.run(debug=True, port=5000, use_reloader=False)

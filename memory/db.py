@@ -19,7 +19,6 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             display_name TEXT NOT NULL,
             api_key_enc TEXT NOT NULL,
-            google_token TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
 
@@ -50,17 +49,6 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id)
         );
-
-        CREATE TABLE IF NOT EXISTS email_drafts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            to_addr TEXT NOT NULL,
-            subject TEXT NOT NULL,
-            body TEXT NOT NULL,
-            status TEXT DEFAULT 'draft',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        );
     ''')
     conn.commit()
     conn.close()
@@ -75,20 +63,20 @@ def get_user(user_id=1):
     return dict(user) if user else None
 
 
-def create_user(display_name, api_key_enc, google_token=None):
+def create_user(display_name, api_key_enc):
     conn = get_connection()
     c = conn.cursor()
     c.execute('''
-        INSERT INTO users (display_name, api_key_enc, google_token)
-        VALUES (?, ?, ?)
-    ''', (display_name, api_key_enc, google_token))
+        INSERT INTO users (display_name, api_key_enc)
+        VALUES (?, ?)
+    ''', (display_name, api_key_enc))
     conn.commit()
     user_id = c.lastrowid
     conn.close()
     return user_id
 
 
-def update_user(user_id, display_name=None, api_key_enc=None, google_token=None):
+def update_user(user_id, display_name=None, api_key_enc=None):
     conn = get_connection()
     c = conn.cursor()
     fields = []
@@ -99,9 +87,6 @@ def update_user(user_id, display_name=None, api_key_enc=None, google_token=None)
     if api_key_enc is not None:
         fields.append("api_key_enc = ?")
         values.append(api_key_enc)
-    if google_token is not None:
-        fields.append("google_token = ?")
-        values.append(google_token)
 
     if not fields:
         conn.close()
@@ -120,7 +105,6 @@ def delete_user(user_id):
     c.execute("DELETE FROM history WHERE user_id = ?", (user_id,))
     c.execute("DELETE FROM activity_log WHERE user_id = ?", (user_id,))
     c.execute("DELETE FROM notifications WHERE user_id = ?", (user_id,))
-    c.execute("DELETE FROM email_drafts WHERE user_id = ?", (user_id,))
     c.execute("DELETE FROM users WHERE id = ?", (user_id,))
     conn.commit()
     conn.close()
@@ -219,30 +203,4 @@ def mark_notified(notification_id):
     conn.close()
 
 
-# ── Email Drafts ───────────────────────────────────────────
 
-def save_draft(user_id, to_addr, subject, body):
-    conn = get_connection()
-    c = conn.cursor()
-    c.execute('''
-        INSERT INTO email_drafts (user_id, to_addr, subject, body)
-        VALUES (?, ?, ?, ?)
-    ''', (user_id, to_addr, subject, body))
-    conn.commit()
-    draft_id = c.lastrowid
-    conn.close()
-    return draft_id
-
-
-def get_draft(draft_id):
-    conn = get_connection()
-    row = conn.execute("SELECT * FROM email_drafts WHERE id = ?", (draft_id,)).fetchone()
-    conn.close()
-    return dict(row) if row else None
-
-
-def update_draft_status(draft_id, status):
-    conn = get_connection()
-    conn.execute("UPDATE email_drafts SET status = ? WHERE id = ?", (status, draft_id))
-    conn.commit()
-    conn.close()
